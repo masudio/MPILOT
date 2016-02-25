@@ -7,16 +7,34 @@ class Main
 	public static void main (String[] args) throws java.lang.Exception
 	{
         //TODO: validate input
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		String line = br.readLine();
-        int pilotListSize = Integer.valueOf(line);
+
+        boolean test = false;
+
         List<Pilot> pilots = new ArrayList<>();
-        int age = 1;
-        for(int i = 0; i < pilotListSize; i++) {
-            line = br.readLine();
-            String[] salaries = line.split(" ");
-            pilots.add(new Pilot(Integer.valueOf(salaries[0]), Integer.valueOf(salaries[1]), age));
-            age++;
+        if(!test) {
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            String line = br.readLine();
+            int pilotListSize = Integer.valueOf(line);
+            for (int i = 0; i < pilotListSize; i++) {
+                line = br.readLine();
+                String[] salaries = line.split(" ");
+                pilots.add(new Pilot(Integer.valueOf(salaries[0]), Integer.valueOf(salaries[1])));
+            }
+        } else {
+            // TEST TEST
+            List<int[]> allSalaries = new ArrayList<>();
+            allSalaries.add(new int[]{10000, 7000});
+            allSalaries.add(new int[]{9000, 3000});
+            allSalaries.add(new int[]{6000, 4000});
+            allSalaries.add(new int[]{5000, 1000});
+            allSalaries.add(new int[]{9000, 3000});
+            allSalaries.add(new int[]{8000, 6000});
+            pilots = new ArrayList<>();
+            for (int[] salaries : allSalaries) {
+                pilots.add(new Pilot(salaries[0], salaries[1]));
+            }
+            // TEST TEST
         }
         List<Map.Entry<Pilot, Pilot>> teams = getPilotTeams(pilots);
 
@@ -33,7 +51,7 @@ class Main
 		List<Map.Entry<Pilot, Pilot>> teams = new ArrayList<>();
         Set<Pilot> done = new HashSet<>();
         PriorityQueue<Pilot> pq = new PriorityQueue<>(
-                pilots.size(), (Comparator<Pilot>) (o1, o2) -> (o1.capt - o1.asst) - (o2.capt - o2.asst));
+                pilots.size(), (Comparator<Pilot>) (o1, o2) -> (o2.capt - o2.asst) - (o1.capt - o1.asst));
         pq.addAll(pilots);
 
         while(!pq.isEmpty()) {
@@ -72,12 +90,10 @@ class Main
     private static class Pilot {
         private int asst;
         private int capt;
-        private int age;
 
-        private Pilot(int capt, int asst, int age) {
+        private Pilot(int capt, int asst) {
             this.capt = capt;
             this.asst = asst;
-            this.age = age;
         }
 
         private int salaryDiffDiff(Pilot other) {
